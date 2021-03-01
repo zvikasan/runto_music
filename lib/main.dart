@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:runto_music/player.dart';
 import 'dart:async';
+
+import 'package:runto_music/player_widget.dart';
 
 String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
@@ -89,12 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!mounted) return;
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   calculateStepsPerMinute() async {
     int startSteps = _steps;
     await Future.delayed(const Duration(seconds: 10), () {});
@@ -134,15 +131,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Divider(
                 height: 100,
-                thickness: 0,
-                color: Colors.white,
+                thickness: 2,
+                color: Colors.blueAccent,
               ),
               Text(
-                _stepsPerMinute.toString(),
+                'SPM: ${_stepsPerMinute.toString()}',
                 style: TextStyle(
                     fontSize: 40,
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.bold),
+              ),
+              Divider(
+                height: 100,
+                thickness: 2,
+                color: Colors.blueAccent,
               ),
               Text(
                 'Pedestrian status:',
@@ -154,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     : _status == 'stopped'
                         ? Icons.accessibility_new
                         : Icons.error,
-                size: 100,
+                size: 10,
               ),
               Center(
                 child: Text(
@@ -163,7 +165,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? TextStyle(fontSize: 30)
                       : TextStyle(fontSize: 20, color: Colors.red),
                 ),
-              )
+              ),
+              Divider(
+                height: 100,
+                thickness: 2,
+                color: Colors.blueAccent,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ExampleApp();
+                    }));
+                  },
+                  child: Text(
+                    'Music',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ))
             ],
           ),
         ),
