@@ -120,10 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
+    double _adjustPlaybackRate = 1;
     await Future.delayed(const Duration(seconds: 10), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      advancedPlayer.setPlaybackRate(playbackRate: _stepsPerMinute / 100);
+      _adjustPlaybackRate = _stepsPerMinute / 100;
+      advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
     });
   }
 
@@ -215,21 +217,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.blueAccent,
               ),
               remoteUrl(),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.stop();
-                  },
-                  child: Text('Stop')),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      advancedPlayer.setUrl(kUrl1);
-                      advancedPlayer.resume();
-                      advancedPlayer.setPlaybackRate(playbackRate: 1);
-                      advancedPlayer.setVolume(2.0);
-                    });
-                  },
-                  child: Text('x2')),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                ElevatedButton(
+                    onPressed: () {
+                      advancedPlayer.stop();
+                    },
+                    child: Text('Stop')),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        advancedPlayer.setUrl(kUrl1);
+                        advancedPlayer.resume();
+                        advancedPlayer.setPlaybackRate(playbackRate: 1);
+                        advancedPlayer.setVolume(2.0);
+                      });
+                    },
+                    child: Text('Start')),
+                ElevatedButton(
+                    onPressed: () {
+                      advancedPlayer.setPlaybackRate(playbackRate: 2);
+                    },
+                    child: Text('x2')),
+              ]),
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
