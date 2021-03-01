@@ -37,7 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?', _steps = '?';
+  String _status = '?', _steps_text = '?';
+  int _steps;
+  int _stepsPerMinute;
 
   @override
   void initState() {
@@ -48,7 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void onStepCount(StepCount event) {
     print(event);
     setState(() {
-      _steps = event.steps.toString();
+      _steps_text = event.steps.toString();
+      _steps = event.steps;
     });
   }
 
@@ -70,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void onStepCountError(error) {
     print('onStepCountError: $error');
     setState(() {
-      _steps = 'Step Count not available';
+      _steps_text = 'Step Count not available';
     });
   }
 
@@ -92,10 +95,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  calculateStepsPerMinute() async {
+    int startSteps = _steps;
+    await Future.delayed(const Duration(seconds: 10), () {});
+    setState(() {
+      _stepsPerMinute = (_steps - startSteps) * 6;
+    });
+  }
+
+  void startMeasuring() {
+    Timer timer;
+    timer = Timer.periodic(
+        Duration(seconds: 1), (Timer t) => calculateStepsPerMinute());
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: startMeasuring,
+          child: Text('Start'),
+        ),
         appBar: AppBar(
           title: const Text('Pedometer example app'),
         ),
@@ -108,13 +129,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 30),
               ),
               Text(
-                _steps,
+                _steps_text,
                 style: TextStyle(fontSize: 60),
               ),
               Divider(
                 height: 100,
                 thickness: 0,
                 color: Colors.white,
+              ),
+              Text(
+                _stepsPerMinute.toString(),
+                style: TextStyle(
+                    fontSize: 40,
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.bold),
               ),
               Text(
                 'Pedestrian status:',
