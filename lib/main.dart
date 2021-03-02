@@ -121,12 +121,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
-
+    double prevPlaybackRate;
     await Future.delayed(const Duration(seconds: 10), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      _adjustPlaybackRate = _stepsPerMinute / 100;
-      // advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
+      prevPlaybackRate = _adjustPlaybackRate;
+      _adjustPlaybackRate = _stepsPerMinute / 80;
+      if (_adjustPlaybackRate > (prevPlaybackRate + 0.5) ||
+          _adjustPlaybackRate < (prevPlaybackRate - 0.5)) {
+        advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
+      }
     });
   }
 
