@@ -124,7 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(const Duration(seconds: 10), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      _adjustPlaybackRate = _stepsPerMinute / 100;
+      //_adjustPlaybackRate = _stepsPerMinute / 100;
+      if (_adjustPlaybackRate == 1) {
+        _adjustPlaybackRate = 2;
+      } else {
+        _adjustPlaybackRate = 1;
+      }
       advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
     });
   }
