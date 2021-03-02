@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _steps;
   int _stepsPerMinute;
   bool seekDone;
+  double _adjustPlaybackRate = 1;
 
   @override
   void initState() {
@@ -120,17 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
-    double _adjustPlaybackRate = 1;
+
     await Future.delayed(const Duration(seconds: 10), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      //_adjustPlaybackRate = _stepsPerMinute / 100;
-      if (_adjustPlaybackRate == 1) {
-        _adjustPlaybackRate = 2;
-      } else {
-        _adjustPlaybackRate = 1;
-      }
-      advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
+      _adjustPlaybackRate = _stepsPerMinute / 100;
+      // advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
     });
   }
 
@@ -243,6 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       advancedPlayer.setPlaybackRate(playbackRate: 2);
                     },
                     child: Text('x2')),
+                Text('Rate: $_adjustPlaybackRate'),
               ]),
               ElevatedButton(
                   onPressed: () {
