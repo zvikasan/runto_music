@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _status = '?', _stepsText = '?';
   int _steps;
   int _stepsPerMinute;
+  double _playbackRate;
 
   @override
   void initState() {
@@ -107,6 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(const Duration(seconds: 20), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
+      _playbackRate = _stepsPerMinute / 90;
+      advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
     });
   }
 
@@ -277,6 +280,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 //height: 100,
                 thickness: 2,
                 color: Colors.blueAccent,
+              ),
+              Text(
+                'Playback Rate $_playbackRate',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ],
           ),
