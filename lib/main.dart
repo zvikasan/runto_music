@@ -105,10 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
-    await Future.delayed(const Duration(seconds: 20), () {});
+    await Future.delayed(const Duration(seconds: 10), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      playbackRate = _stepsPerMinute / 200;
+      playbackRate = _stepsPerMinute / 90;
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     advancedPlayer.setPlaybackRate(playbackRate: playbackRate);
                   },
-                  child: Text('Spd x1.5')),
+                  child: Text('Spd $playbackRate}')),
               ElevatedButton(
                   onPressed: () {
                     advancedPlayer.setPlaybackRate(playbackRate: 2);
