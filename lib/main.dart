@@ -109,8 +109,16 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
       _playbackRate = _stepsPerMinute / 90;
-      advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
     });
+  }
+
+  changePlaybackRate() {
+    while (true) {
+      if (_playbackRate != null) {
+        advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
+      }
+      // do something
+    }
   }
 
   void startMeasuring() {
@@ -209,8 +217,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final audioPosition =
-    //     Provider.of<Duration>(context); // for the music player
+    changePlaybackRate();
+
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
