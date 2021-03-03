@@ -54,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _steps;
   int _stepsPerMinute;
   double playbackRate;
+  double testVar = 1.9;
 
   @override
   void initState() {
@@ -164,9 +165,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Spd x1')),
               ElevatedButton(
                   onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: playbackRate);
+                    advancedPlayer.setPlaybackRate(playbackRate: testVar);
                   },
-                  child: Text('Spd $playbackRate}')),
+                  child: Text('Spd x1.5}')),
               ElevatedButton(
                   onPressed: () {
                     advancedPlayer.setPlaybackRate(playbackRate: 2);
