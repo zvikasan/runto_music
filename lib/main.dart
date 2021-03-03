@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text('Spd x1')),
               ElevatedButton(
                   onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: 1.5);
+                    advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
                   },
                   child: Text('Spd x1.5')),
               ElevatedButton(
