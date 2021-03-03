@@ -110,15 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _stepsPerMinute = (_steps - startSteps) * 6;
       _playbackRate = _stepsPerMinute / 90;
     });
-  }
-
-  changePlaybackRate() {
-    while (true) {
-      if (_playbackRate != null) {
-        advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
-      }
-      // do something
-    }
+    advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
 
   void startMeasuring() {
@@ -217,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    changePlaybackRate();
+    // changePlaybackRate();
 
     return MaterialApp(
       home: Scaffold(
