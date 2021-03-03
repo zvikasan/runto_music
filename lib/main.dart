@@ -48,39 +48,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AudioCache audioCache = AudioCache();
-  AudioPlayer advancedPlayer = AudioPlayer();
-  String localFilePath;
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = '?', _steps_text = '?';
+  String _status = '?', _stepsText = '?';
   int _steps;
   int _stepsPerMinute;
-  bool seekDone;
-  double _adjustPlaybackRate = 1;
 
   @override
   void initState() {
     initPlatformState();
-    if (kIsWeb) {
-      // Calls to Platform.isIOS fails on web
-      return;
-    }
-    if (Platform.isIOS) {
-      if (audioCache.fixedPlayer != null) {
-        audioCache.fixedPlayer.startHeadlessService();
-      }
-      advancedPlayer.startHeadlessService();
-    }
-    advancedPlayer.seekCompleteHandler =
-        (finished) => setState(() => seekDone = finished);
     super.initState();
   }
 
   void onStepCount(StepCount event) {
     print(event);
     setState(() {
-      _steps_text = event.steps.toString();
+      _stepsText = event.steps.toString();
       _steps = event.steps;
     });
   }
@@ -103,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void onStepCountError(error) {
     print('onStepCountError: $error');
     setState(() {
-      _steps_text = 'Step Count not available';
+      _stepsText = 'Step Count not available';
     });
   }
 
@@ -121,42 +104,110 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
-    double prevPlaybackRate;
-    await Future.delayed(const Duration(seconds: 10), () {});
+    await Future.delayed(const Duration(seconds: 20), () {});
     setState(() {
       _stepsPerMinute = (_steps - startSteps) * 6;
-      prevPlaybackRate = _adjustPlaybackRate;
-      _adjustPlaybackRate = _stepsPerMinute / 80;
-      if (_adjustPlaybackRate > (prevPlaybackRate + 0.5) ||
-          _adjustPlaybackRate < (prevPlaybackRate - 0.5)) {
-        advancedPlayer.setPlaybackRate(playbackRate: _adjustPlaybackRate);
-      }
     });
   }
 
   void startMeasuring() {
-    Timer timer;
-    timer = Timer.periodic(
-        Duration(seconds: 1), (Timer t) => calculateStepsPerMinute());
+    // Timer timer;
+    Timer.periodic(
+        Duration(seconds: 5), (Timer t) => calculateStepsPerMinute());
   }
 
-  // ------------------ Music Related ---------------------
-  Widget remoteUrl() {
-    return SingleChildScrollView(
-      child: _Tab(children: [
-        Text(
-          'Sample 1 ($kUrl1)',
-          key: Key('url1'),
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        PlayerWidget(url: kUrl1),
-      ]),
+  // ---------------- Music-Related-Code ------------------
+  AudioCache audioCache = AudioCache();
+  AudioPlayer advancedPlayer = AudioPlayer();
+
+  Widget playLocalAsset() {
+    audioCache.fixedPlayer = advancedPlayer;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    audioCache.play('music/i_like_it.mp3');
+                  },
+                  child: Text('Play')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.pause();
+                  },
+                  child: Text('Pause')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.stop();
+                  },
+                  child: Text('Stop')),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setPlaybackRate(playbackRate: 0.5);
+                  },
+                  child: Text('Spd x0.5')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setPlaybackRate(playbackRate: 1);
+                  },
+                  child: Text('Spd x1')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setPlaybackRate(playbackRate: 1.5);
+                  },
+                  child: Text('Spd x1.5')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setPlaybackRate(playbackRate: 2);
+                  },
+                  child: Text('Spd x2')),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setVolume(0);
+                  },
+                  child: Text('Vol 0')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setVolume(0.5);
+                  },
+                  child: Text('Vol 0.5')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setVolume(0.8);
+                  },
+                  child: Text('Vol 0.8')),
+              ElevatedButton(
+                  onPressed: () {
+                    advancedPlayer.setVolume(1);
+                  },
+                  child: Text('Vol 1')),
+            ],
+          )
+        ],
+      ),
     );
   }
-  //-----------------End of Music Related ------------------
+  // music/i_like_it.mp3
+
+  // ----------------End of Music-Related-Code ------------------
 
   @override
   Widget build(BuildContext context) {
+    // final audioPosition =
+    //     Provider.of<Duration>(context); // for the music player
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -176,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(fontSize: 10),
               ),
               Text(
-                _steps_text,
+                _stepsText,
                 style: TextStyle(fontSize: 10),
               ),
               Divider(
@@ -221,41 +272,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 thickness: 2,
                 color: Colors.blueAccent,
               ),
-              remoteUrl(),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                ElevatedButton(
-                    onPressed: () {
-                      advancedPlayer.stop();
-                    },
-                    child: Text('Stop')),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        advancedPlayer.setUrl(kUrl1);
-                        advancedPlayer.resume();
-                        advancedPlayer.setPlaybackRate(playbackRate: 1);
-                        advancedPlayer.setVolume(2.0);
-                      });
-                    },
-                    child: Text('Start')),
-                ElevatedButton(
-                    onPressed: () {
-                      advancedPlayer.setPlaybackRate(playbackRate: 2);
-                    },
-                    child: Text('x2')),
-                Text('Rate: $_adjustPlaybackRate'),
-              ]),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ExampleApp();
-                    }));
-                  },
-                  child: Text(
-                    'Music',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ))
+              playLocalAsset(),
+              Divider(
+                //height: 100,
+                thickness: 2,
+                color: Colors.blueAccent,
+              ),
             ],
           ),
         ),
@@ -265,26 +287,5 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 //--------------- Music Related --------------------------
-class _Tab extends StatelessWidget {
-  final List<Widget> children;
 
-  const _Tab({Key key, this.children}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        alignment: Alignment.topCenter,
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: children
-                .map((w) => Container(child: w, padding: EdgeInsets.all(6.0)))
-                .toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
 //--------------End of Music Related ---------------------

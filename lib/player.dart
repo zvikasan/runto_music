@@ -102,6 +102,7 @@ class _ExampleAppState extends State<ExampleApp> {
   }
 
   Widget localAsset() {
+    //audioCache.fixedPlayer = advancedPlayer;
     return SingleChildScrollView(
       child: _Tab(children: [
         Text('Play Local Asset \'audio.mp3\':'),
