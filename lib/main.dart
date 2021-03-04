@@ -304,6 +304,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Playback Rate $playbackRate',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return ExampleApp();
+                    }));
+                  },
+                  child: Text('Music'))
             ],
           ),
         ),

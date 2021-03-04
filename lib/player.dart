@@ -394,7 +394,7 @@ class _AdvancedState extends State<Advanced> {
             children: [
               Text('Rate'),
               Row(
-                children: [0.5, 1.0, 1.5, 4.0].map((e) {
+                children: [0.5, 1.3, 1.5, 4.0].map((e) {
                   return _Btn(
                     txt: e.toString(),
                     onPressed: () {
