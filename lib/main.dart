@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
@@ -52,9 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _stepsText = '?';
   int _steps;
-  int _stepsPerMinute;
-  double playbackRate;
+  int stepsPerMinute;
+  double playbackRate = 0;
   double testVar = 0.3;
+  ValueListenable<double> playbackValue;
 
   @override
   void initState() {
@@ -110,8 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(const Duration(seconds: 10), () {});
     endSteps = _steps - startSteps;
     setState(() {
-      _stepsPerMinute = endSteps * 6;
-      playbackRate = _stepsPerMinute / 90;
+      stepsPerMinute = endSteps * 6;
+      playbackRate = stepsPerMinute / 90;
+      print(playbackRate.runtimeType);
+      print('PLAYBACKRATE $playbackRate');
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
@@ -165,6 +169,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     advancedPlayer.setPlaybackRate(playbackRate: 1);
                   },
                   child: Text('Spd x1')),
+              // ValueListenableBuilder(
+              //     // valueListenable: playbackRate,
+              //     builder: (BuildContext context, double playbackRate,
+              //         Widget child) {
+              //   return Row(
+              //     children: [Text('$playbackRate')],
+              //   );
+              // }),
               ElevatedButton(
                   onPressed: () {
                     advancedPlayer.setPlaybackRate(playbackRate: playbackRate);
@@ -243,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.blueAccent,
               ),
               Text(
-                'SPM: ${_stepsPerMinute.toString()}',
+                'SPM: ${stepsPerMinute.toString()}',
                 style: TextStyle(
                     fontSize: 40,
                     color: Colors.blueAccent,
