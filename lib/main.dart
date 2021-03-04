@@ -62,6 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     initPlatformState();
     super.initState();
+    if (kIsWeb) {
+      // Calls to Platform.isIOS fails on web
+      return;
+    }
+    if (Platform.isIOS) {
+      if (audioCache.fixedPlayer != null) {
+        audioCache.fixedPlayer.startHeadlessService();
+      }
+      advancedPlayer.startHeadlessService();
+    }
   }
 
   void onStepCount(StepCount event) {
