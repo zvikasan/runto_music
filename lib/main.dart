@@ -183,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     double setRate;
                     setRate = double.parse(playbackRate.toStringAsFixed(2));
                     print('SETRATESETRATE $setRate');
-                    advancedPlayer.setPlaybackRate(playbackRate: setRate);
+                    advancedPlayer.setPlaybackRate(playbackRate: 1.863534353);
                   },
                   child: Text('Custom')),
               ElevatedButton(
