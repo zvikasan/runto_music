@@ -106,11 +106,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   calculateStepsPerMinute() async {
     int startSteps = _steps;
-    await Future.delayed(const Duration(seconds: 10), () {
-      playbackRate = _stepsPerMinute / 90;
-    });
+    int endSteps = 0;
+    await Future.delayed(const Duration(seconds: 10), () {});
+    endSteps = _steps - startSteps;
     setState(() {
-      _stepsPerMinute = (_steps - startSteps) * 6;
+      _stepsPerMinute = endSteps * 6;
       playbackRate = _stepsPerMinute / 90;
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
