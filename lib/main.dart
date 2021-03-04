@@ -179,8 +179,11 @@ class _MyHomePageState extends State<MyHomePage> {
               // }),
               ElevatedButton(
                   onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: playbackRate);
                     print('Just Set playback rate to $playbackRate');
+                    double setRate;
+                    setRate = playbackRate;
+                    print('SETRATESETRATE $setRate');
+                    advancedPlayer.setPlaybackRate(playbackRate: setRate);
                   },
                   child: Text('Custom')),
               ElevatedButton(
