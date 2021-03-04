@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _status = '?', _stepsText = '?';
   int _steps;
   int stepsPerMinute;
-  double playbackRate = 0;
+  double playbackRate = 1.35;
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
 
@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       stepsPerMinute = endSteps * 6;
       playbackRate = stepsPerMinute / 90;
-      print(playbackRate.runtimeType);
+      print('PLAYBACKRATE RUNTIMETYPE {playbackRate.runtimeType}');
       print('PLAYBACKRATE $playbackRate');
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     print('Just Set playback rate to $playbackRate');
                     double setRate;
-                    setRate = playbackRate;
+                    setRate = double.parse(playbackRate.toStringAsFixed(2));
                     print('SETRATESETRATE $setRate');
                     advancedPlayer.setPlaybackRate(playbackRate: setRate);
                   },
