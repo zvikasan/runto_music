@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
     endSteps = _steps - startSteps;
     setState(() {
       stepsPerMinute = endSteps * 6;
-      playbackRate = stepsPerMinute / 90;
+      playbackRate = stepsPerMinute / 129; //129 is my sample song BPM
       assetsAudioPlayer.setPlaySpeed(playbackRate);
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
