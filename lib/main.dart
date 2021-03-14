@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/src/foundation/constants.dart';
 import 'player.dart';
 import 'player_widget.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 //------------------- Music Related --------------------------------
 typedef void OnError(Exception exception);
@@ -58,20 +59,20 @@ class _MyHomePageState extends State<MyHomePage> {
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
 
+  //----------- Second Audio Player --------------------
+  // final AssetsAudioPlayer _player = AssetsAudioPlayer.newPlayer();
+  final assetsAudioPlayer = AssetsAudioPlayer();
+
+  void newMusic() {
+    assetsAudioPlayer.open(Audio('assets/music/i_like_it.mp3'));
+    assetsAudioPlayer.play();
+  }
+  // ---------------------------------------------------
+
   @override
   void initState() {
     initPlatformState();
     super.initState();
-    if (kIsWeb) {
-      // Calls to Platform.isIOS fails on web
-      return;
-    }
-    if (Platform.isIOS) {
-      if (audioCache.fixedPlayer != null) {
-        audioCache.fixedPlayer.startHeadlessService();
-      }
-      advancedPlayer.startHeadlessService();
-    }
   }
 
   void onStepCount(StepCount event) {
@@ -124,8 +125,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       stepsPerMinute = endSteps * 6;
       playbackRate = stepsPerMinute / 90;
-      print('PLAYBACKRATE RUNTIMETYPE {playbackRate.runtimeType}');
-      print('PLAYBACKRATE $playbackRate');
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
@@ -321,7 +320,78 @@ class _MyHomePageState extends State<MyHomePage> {
                       return ExampleApp();
                     }));
                   },
-                  child: Text('Music'))
+                  child: Text('Music')),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer
+                            .open(Audio('assets/music/i_like_it.mp3'));
+                      },
+                      child: Text('OpenSong')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.play();
+                      },
+                      child: Text('Play')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.stop();
+                      },
+                      child: Text('NewPlayerStop')),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(0.5);
+                      },
+                      child: Text('x0.5')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(1.0);
+                      },
+                      child: Text('x1.0')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(1.5);
+                      },
+                      child: Text('x1.5')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(2.0);
+                      },
+                      child: Text('x2.0')),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(0.23);
+                      },
+                      child: Text('x0.23')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(1.67);
+                      },
+                      child: Text('x1.67')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(1.23);
+                      },
+                      child: Text('x1.23')),
+                  ElevatedButton(
+                      onPressed: () {
+                        assetsAudioPlayer.setPlaySpeed(2.34);
+                      },
+                      child: Text('x2.34')),
+                ],
+              )
             ],
           ),
         ),
