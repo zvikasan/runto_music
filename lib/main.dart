@@ -125,6 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       stepsPerMinute = endSteps * 6;
       playbackRate = stepsPerMinute / 90;
+      assetsAudioPlayer.setPlaySpeed(playbackRate);
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
