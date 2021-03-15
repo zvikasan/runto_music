@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
   calculateStepsPerMinute() async {
     int startSteps = _steps;
     int endSteps = 0;
-    await Future.delayed(const Duration(seconds: 10), () {});
+    await Future.delayed(const Duration(seconds: 20), () {});
     endSteps = _steps - startSteps;
     setState(() {
       stepsPerMinute = endSteps * 6;
