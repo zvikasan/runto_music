@@ -296,9 +296,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           });
                         },
                         keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
                         decoration: InputDecoration(labelText: 'L of M'),
                       ),
                     ),
