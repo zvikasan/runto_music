@@ -295,7 +295,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             lengthOfMeasurement = int.parse(nums);
                           });
                         },
-                        keyboardType: TextInputType.number,
+                        //keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: 'L of M'),
                       ),
                     ),
@@ -307,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             periodOfMeasurement = int.parse(nums);
                           });
                         },
-                        keyboardType: TextInputType.number,
+                        //keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -322,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             songBPM = int.parse(nums);
                           });
                         },
-                        keyboardType: TextInputType.number,
+                        //keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
