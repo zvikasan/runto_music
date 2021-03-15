@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(Duration(seconds: lengthOfMeasurement), () {});
     endSteps = _steps - startSteps;
     setState(() {
-      stepsPerMinute = endSteps * 6;
+      stepsPerMinute = (endSteps * (60 / lengthOfMeasurement)).toInt();
       playbackRate = stepsPerMinute / songBPM; //129 is my sample song BPM
       assetsAudioPlayer.setPlaySpeed(playbackRate);
     });
