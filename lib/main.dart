@@ -59,16 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
 
-  //----------- Second Audio Player --------------------
-  // final AssetsAudioPlayer _player = AssetsAudioPlayer.newPlayer();
-  final assetsAudioPlayer = AssetsAudioPlayer();
-
-  void newMusic() {
-    assetsAudioPlayer.open(Audio('assets/music/i_like_it.mp3'));
-    assetsAudioPlayer.play();
-  }
-  // ---------------------------------------------------
-
   @override
   void initState() {
     initPlatformState();
@@ -137,103 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // ---------------- Music-Related-Code ------------------
-  AudioCache audioCache = AudioCache();
-  AudioPlayer advancedPlayer = AudioPlayer();
+  final assetsAudioPlayer = AssetsAudioPlayer();
 
-  Widget playLocalAsset() {
-    audioCache.fixedPlayer = advancedPlayer;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    audioCache.play('music/i_like_it.mp3');
-                  },
-                  child: Text('Play')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.pause();
-                  },
-                  child: Text('Pause')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.stop();
-                  },
-                  child: Text('Stop')),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: 0.5);
-                  },
-                  child: Text('Spd x0.5')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: 1);
-                  },
-                  child: Text('Spd x1')),
-              // ValueListenableBuilder(
-              //     // valueListenable: playbackRate,
-              //     builder: (BuildContext context, double playbackRate,
-              //         Widget child) {
-              //   return Row(
-              //     children: [Text('$playbackRate')],
-              //   );
-              // }),
-              ElevatedButton(
-                  onPressed: () {
-                    print('Just Set playback rate to $playbackRate');
-                    double setRate;
-                    setRate = double.parse(playbackRate.toStringAsFixed(2));
-                    print('SETRATESETRATE $setRate');
-                    advancedPlayer.setPlaybackRate(playbackRate: 1.863534353);
-                  },
-                  child: Text('Custom')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setPlaybackRate(playbackRate: 2);
-                  },
-                  child: Text('Spd x2')),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setVolume(0);
-                  },
-                  child: Text('Vol 0')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setVolume(0.5);
-                  },
-                  child: Text('Vol 0.5')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setVolume(0.8);
-                  },
-                  child: Text('Vol 0.8')),
-              ElevatedButton(
-                  onPressed: () {
-                    advancedPlayer.setVolume(1);
-                  },
-                  child: Text('Vol 1')),
-            ],
-          )
-        ],
-      ),
-    );
+  void newMusic() {
+    assetsAudioPlayer.open(Audio('assets/music/i_like_it.mp3'));
+    assetsAudioPlayer.play();
   }
-  // music/i_like_it.mp3
-
   // ----------------End of Music-Related-Code ------------------
 
   @override
@@ -304,24 +203,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 thickness: 2,
                 color: Colors.blueAccent,
               ),
-              playLocalAsset(),
+              Text(
+                'Playback Rate $playbackRate',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
               Divider(
                 //height: 100,
                 thickness: 2,
                 color: Colors.blueAccent,
               ),
-              Text(
-                'Playback Rate $playbackRate',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ExampleApp();
-                    }));
-                  },
-                  child: Text('Music')),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -392,7 +282,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       child: Text('x2.34')),
                 ],
-              )
+              ),
+              Divider(
+                //height: 100,
+                thickness: 2,
+                color: Colors.blueAccent,
+              ),
             ],
           ),
         ),
