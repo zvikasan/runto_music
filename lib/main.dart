@@ -2,15 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/src/foundation/constants.dart';
-import 'player.dart';
-import 'player_widget.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 
 //------------------- Music Related --------------------------------
