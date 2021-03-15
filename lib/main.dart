@@ -343,6 +343,26 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text('Period: $periodOfMeasurement'),
                     Text('SongBPM: $songBPM')
                   ],
+                ),
+                Divider(
+                  //height: 100,
+                  thickness: 2,
+                  color: Colors.blueAccent,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          lengthOfMeasurement = 20;
+                          periodOfMeasurement = 5;
+                          songBPM = 129;
+                        });
+                      },
+                      child: Text('Reset Values'),
+                    )
+                  ],
                 )
               ],
             ),
