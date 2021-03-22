@@ -51,6 +51,13 @@ flutter:
   uses-material-design: true
   assets:
     - assets/music/i_like_it.mp3
+    - assets/music/despacito.mp3
+    - assets/music/eye-of-tiger.mp3
+    - assets/music/final-countdown.mp3
+    - assets/music/gotta-feeling.mp3
+    - assets/music/higher-love.mp3
+    - assets/music/maniac.mp3
+    - assets/music/pump-it.mp3
 
   # To add assets to your application, add an assets section, like this:
   # assets:

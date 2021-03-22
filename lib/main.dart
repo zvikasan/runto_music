@@ -54,6 +54,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int periodOfMeasurement = 5;
   int songBPM = 129;
 
+  var songsBpmMap = {
+    'assets/music/i_like_it.mp3': 129,
+    'assets/music/despacito.mp3': 89,
+    'assets/music/eye-of-tiger.mp3': 108,
+    'assets/music/final-countdown.mp3': 117,
+    'assets/music/gotta-feeling.mp3': 129,
+    'assets/music/higher-love.mp3': 103,
+    'assets/music/maniac.mp3': 161,
+    'assets/music/pump-it.mp3': 103,
+  };
+
   @override
   void initState() {
     initPlatformState();
@@ -213,20 +224,64 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          assetsAudioPlayer
-                              .open(Audio('assets/music/i_like_it.mp3'));
+                          // assetsAudioPlayer
+                          //     .open(Audio('assets/music/i_like_it.mp3'));
+                          assetsAudioPlayer.open(
+                              Playlist(audios: [
+                                Audio("assets/music/i_like_it.mp3"),
+                                Audio("assets/music/despacito.mp3"),
+                                Audio("assets/music/eye-of-tiger.mp3"),
+                                Audio("assets/music/final-countdown.mp3"),
+                                Audio("assets/music/gotta-feeling.mp3"),
+                                Audio("assets/music/higher-love.mp3"),
+                                Audio("assets/music/maniac.mp3"),
+                                Audio("assets/music/pump-it.mp3"),
+                              ]),
+                              loopMode:
+                                  LoopMode.playlist //loop the full playlist
+                              );
+                          setState(() {
+                            songBPM = 129;
+                          });
                         },
-                        child: Text('OpenSong')),
+                        child: Text('Open')),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.previous();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.skip_previous)),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.play();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.play_arrow)),
                     ElevatedButton(
                         onPressed: () {
-                          assetsAudioPlayer.play();
+                          assetsAudioPlayer.pause();
                         },
-                        child: Text('Play')),
+                        child: Icon(Icons.pause)),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.next();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.skip_next)),
                     ElevatedButton(
                         onPressed: () {
                           assetsAudioPlayer.stop();
                         },
-                        child: Text('NewPlayerStop')),
+                        child: Icon(Icons.stop)),
                   ],
                 ),
                 Row(
