@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -123,9 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
       songBPM = songsBpmMap[
           '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
-      playbackRate = stepsPerMinute /
-          songBPM; //129 is the BPM of first song in my test playlist
-      assetsAudioPlayer.setPlaySpeed(playbackRate);
+      if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
+          (stepsPerMinute / songBPM) < playbackRate * 0.85) {
+        playbackRate = stepsPerMinute /
+            songBPM; //129 is the BPM of first song in my test playlist
+        assetsAudioPlayer.setPlaySpeed(playbackRate);
+      }
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
