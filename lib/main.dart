@@ -116,9 +116,14 @@ class _MyHomePageState extends State<MyHomePage> {
   calculateStepsPerMinute() async {
     int startSteps = _steps;
     int endSteps = 0;
+
     await Future.delayed(Duration(seconds: lengthOfMeasurement), () {});
     endSteps = _steps - startSteps;
     setState(() {
+      print(assetsAudioPlayer.current.value.audio.assetAudioPath);
+      songBPM = songsBpmMap[
+          '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+      print('SONGBPMSONGBPMSONGBPM $songBPM');
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
       playbackRate = stepsPerMinute /
           songBPM; //129 is the BPM of first song in my test playlist
@@ -286,10 +291,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                               .toDouble())),
                             ]),
                             loopMode: LoopMode.playlist,
+                            playInBackground: PlayInBackground.enabled,
                           );
-                          setState(() {
-                            songBPM = 129;
-                          });
+                          // setState(() {
+                          //   // songBPM = 129;
+                          //   assetsAudioPlayer.playlistAudioFinished
+                          //       .listen((event) {
+                          //     songBPM = songsBpmMap[
+                          //         '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                          //   });
+                          // });
                         },
                         child: Text('Open')),
                     ElevatedButton(
