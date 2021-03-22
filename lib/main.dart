@@ -50,8 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double playbackRate = 1.35;
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
-  int lengthOfMeasurement = 20;
-  int periodOfMeasurement = 5;
+  int lengthOfMeasurement = 60;
+  int periodOfMeasurement = 200;
   int songBPM = 129;
 
   var songsBpmMap = {
@@ -120,10 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(Duration(seconds: lengthOfMeasurement), () {});
     endSteps = _steps - startSteps;
     setState(() {
-      print(assetsAudioPlayer.current.value.audio.assetAudioPath);
       songBPM = songsBpmMap[
           '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
-      print('SONGBPMSONGBPMSONGBPM $songBPM');
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
       playbackRate = stepsPerMinute /
           songBPM; //129 is the BPM of first song in my test playlist
@@ -134,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void startMeasuring() {
     // Timer timer;
-    Timer.periodic(Duration(seconds: periodOfMeasurement),
+    Timer.periodic(Duration(milliseconds: periodOfMeasurement),
         (Timer t) => calculateStepsPerMinute());
   }
 
