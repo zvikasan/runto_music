@@ -6,8 +6,8 @@ import 'dart:async';
 import 'package:assets_audio_player/assets_audio_player.dart';
 
 //------------------- Music Related --------------------------------
-typedef void OnError(Exception exception);
-const kUrl1 = 'https://luan.xyz/files/audio/ambient_c_motion.mp3';
+// typedef void OnError(Exception exception);
+// const kUrl1 = 'https://luan.xyz/files/audio/ambient_c_motion.mp3';
 //----------------End of Music Related -----------------------------
 
 String formatDate(DateTime d) {
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _stepsText = '?';
   int _steps;
-  int stepsPerMinute;
+  int stepsPerMinute = 0;
   double playbackRate = 1.35;
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
@@ -119,8 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(Duration(seconds: lengthOfMeasurement), () {});
     endSteps = _steps - startSteps;
     setState(() {
-      stepsPerMinute = (endSteps * (60 / lengthOfMeasurement)).toInt();
-      playbackRate = stepsPerMinute / songBPM; //129 is my sample song BPM
+      stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
+      playbackRate = stepsPerMinute /
+          songBPM; //129 is the BPM of first song in my test playlist
       assetsAudioPlayer.setPlaySpeed(playbackRate);
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
@@ -144,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // changePlaybackRate();
-
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -227,19 +227,66 @@ class _MyHomePageState extends State<MyHomePage> {
                           // assetsAudioPlayer
                           //     .open(Audio('assets/music/i_like_it.mp3'));
                           assetsAudioPlayer.open(
-                              Playlist(audios: [
-                                Audio("assets/music/i_like_it.mp3"),
-                                Audio("assets/music/despacito.mp3"),
-                                Audio("assets/music/eye-of-tiger.mp3"),
-                                Audio("assets/music/final-countdown.mp3"),
-                                Audio("assets/music/gotta-feeling.mp3"),
-                                Audio("assets/music/higher-love.mp3"),
-                                Audio("assets/music/maniac.mp3"),
-                                Audio("assets/music/pump-it.mp3"),
-                              ]),
-                              loopMode:
-                                  LoopMode.playlist //loop the full playlist
-                              );
+                            Playlist(audios: [
+                              Audio("assets/music/i_like_it.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/i_like_it.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/despacito.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/despacito.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/eye-of-tiger.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/eye-of-tiger.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/final-countdown.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/final-countdown.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/gotta-feeling.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/gotta-feeling.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/higher-love.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/higher-love.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/maniac.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/maniac.mp3']
+                                              .toDouble())),
+                              Audio("assets/music/pump-it.mp3",
+                                  playSpeed: stepsPerMinute == 0
+                                      ? 1
+                                      : stepsPerMinute /
+                                          (songsBpmMap[
+                                                  'assets/music/pump-it.mp3']
+                                              .toDouble())),
+                            ]),
+                            loopMode: LoopMode.playlist,
+                          );
                           setState(() {
                             songBPM = 129;
                           });
