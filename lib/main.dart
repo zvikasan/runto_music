@@ -1,4 +1,3 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: AudioServiceWidget(child: MyHomePage(title: 'RuntoMusic')),
+      home: MyHomePage(title: 'RuntoMusic'),
     );
   }
 }
@@ -124,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
     endSteps = _steps - startSteps;
     setState(() {
       songBPM = songsBpmMap[
-          '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+          '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
       if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
           (stepsPerMinute / songBPM) < playbackRate * 0.85) {
@@ -312,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await assetsAudioPlayer.previous();
                           setState(() {
                             songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
                           });
                         },
                         child: Icon(Icons.skip_previous)),
@@ -321,7 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await assetsAudioPlayer.play();
                           setState(() {
                             songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
                           });
                         },
                         child: Icon(Icons.play_arrow)),
@@ -335,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           await assetsAudioPlayer.next();
                           setState(() {
                             songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.value.audio.assetAudioPath}'];
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
                           });
                         },
                         child: Icon(Icons.skip_next)),
