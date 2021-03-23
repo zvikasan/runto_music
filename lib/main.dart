@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       songBPM = songsBpmMap[
           '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
-      stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
+      stepsPerMinute = (endSteps * (60 / lengthOfMeasurement)).round();
       if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
           (stepsPerMinute / songBPM) < playbackRate * 0.85) {
         playbackRate = (stepsPerMinute /
