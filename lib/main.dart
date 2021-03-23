@@ -127,8 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
       if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
           (stepsPerMinute / songBPM) < playbackRate * 0.85) {
-        playbackRate = (stepsPerMinute / songBPM) -
-            corrCoef; //129 is the BPM of first song in my test playlist
+        playbackRate = (stepsPerMinute /
+            (songBPM +
+                corrCoef)); //129 is the BPM of first song in my test playlist
         assetsAudioPlayer.setPlaySpeed(playbackRate);
       }
     });
