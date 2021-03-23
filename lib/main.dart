@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: AudioServiceWidget(child: MyHomePage(title: 'RuntoMusic')),
     );
   }
 }
@@ -54,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int lengthOfMeasurement = 60;
   int periodOfMeasurement = 200;
   int songBPM = 129;
+  int corrCoef = 15;
 
   var songsBpmMap = {
     'assets/music/i_like_it.mp3': 129,
@@ -126,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
       stepsPerMinute = (endSteps * (60 ~/ lengthOfMeasurement));
       if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
           (stepsPerMinute / songBPM) < playbackRate * 0.85) {
-        playbackRate = stepsPerMinute /
-            songBPM; //129 is the BPM of first song in my test playlist
+        playbackRate = (stepsPerMinute / songBPM) -
+            corrCoef; //129 is the BPM of first song in my test playlist
         assetsAudioPlayer.setPlaySpeed(playbackRate);
       }
     });
@@ -159,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text('Start'),
         ),
         appBar: AppBar(
-          title: const Text('Pedometer example app'),
+          title: const Text('Run To Music'),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -434,14 +436,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: TextField(
                         onSubmitted: (nums) {
                           setState(() {
-                            songBPM = int.parse(nums);
+                            corrCoef = int.parse(nums);
                           });
                         },
                         //keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        decoration: InputDecoration(labelText: 'Song BPM'),
+                        decoration: InputDecoration(labelText: 'Correction'),
                       ),
                     ),
                   ],
@@ -456,7 +458,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Text('Length: $lengthOfMeasurement'),
                     Text('Period: $periodOfMeasurement'),
-                    Text('SongBPM: $songBPM')
+                    Text('SongBPM: $songBPM'),
+                    Text('Corr: $corrCoef')
                   ],
                 ),
                 Divider(
@@ -470,9 +473,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     RaisedButton(
                       onPressed: () {
                         setState(() {
-                          lengthOfMeasurement = 20;
-                          periodOfMeasurement = 5;
-                          songBPM = 129;
+                          lengthOfMeasurement = 60;
+                          periodOfMeasurement = 200;
+                          corrCoef = 15;
                         });
                       },
                       child: Text('Reset Values'),
