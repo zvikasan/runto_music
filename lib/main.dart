@@ -125,13 +125,13 @@ class _MyHomePageState extends State<MyHomePage> {
       songBPM = songsBpmMap[
           '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
       stepsPerMinute = (endSteps * (60 / lengthOfMeasurement)).round();
-      if ((stepsPerMinute / songBPM) > playbackRate * 1.15 ||
-          (stepsPerMinute / songBPM) < playbackRate * 0.85) {
-        playbackRate = (stepsPerMinute /
-            (songBPM +
-                corrCoef)); //129 is the BPM of first song in my test playlist
-        assetsAudioPlayer.setPlaySpeed(playbackRate);
-      }
+      // if ((stepsPerMinute / songBPM) > playbackRate * 1.002 ||
+      //     (stepsPerMinute / songBPM) < playbackRate * 0.97) {
+      playbackRate = (stepsPerMinute /
+          (songBPM +
+              corrCoef)); //129 is the BPM of first song in my test playlist
+      assetsAudioPlayer.setPlaySpeed(playbackRate);
+      // }
     });
     // advancedPlayer.setPlaybackRate(playbackRate: _playbackRate);
   }
