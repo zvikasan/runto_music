@@ -20,7 +20,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,6 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int periodOfMeasurement = 200;
   int songBPM = 129;
   int corrCoef = 15;
+
+  // --- new approach variables
+  List<int> stepsDataList = [];
 
   var songsBpmMap = {
     'assets/music/i_like_it.mp3': 129,
@@ -140,6 +142,43 @@ class _MyHomePageState extends State<MyHomePage> {
     // Timer timer;
     Timer.periodic(Duration(milliseconds: periodOfMeasurement),
         (Timer t) => calculateStepsPerMinute());
+  }
+
+  void startMeasuringNew() {
+    Timer.periodic(Duration(milliseconds: periodOfMeasurement),
+        (Timer t) => calculateStepsPerMinuteNew());
+  }
+
+  void calculateStepsPerMinuteNew() {
+    int endSteps = _steps - stepsDataList.last;
+    if (stepsDataList.length < 300) {
+      // endSteps = _steps - stepsDataList.last;
+      setState(() {
+        stepsPerMinute = (endSteps * ((stepsDataList.length / 5) / 60).round());
+        if ((stepsPerMinute / songBPM) > playbackRate * 1.002 ||
+            (stepsPerMinute / songBPM) < playbackRate * 0.97) {
+          playbackRate = (stepsPerMinute /
+              (songBPM +
+                  corrCoef)); //129 is the BPM of first song in my test playlist
+          assetsAudioPlayer.setPlaySpeed(playbackRate);
+        }
+      });
+      stepsDataList.insert(0, _steps);
+    } else {
+      // endSteps = _steps - stepsDataList.last;
+      setState(() {
+        stepsPerMinute = endSteps;
+        if ((stepsPerMinute / songBPM) > playbackRate * 1.002 ||
+            (stepsPerMinute / songBPM) < playbackRate * 0.97) {
+          playbackRate = (stepsPerMinute /
+              (songBPM +
+                  corrCoef)); //129 is the BPM of first song in my test playlist
+          assetsAudioPlayer.setPlaySpeed(playbackRate);
+        }
+      });
+      stepsDataList.removeLast();
+      stepsDataList.insert(0, _steps);
+    }
   }
 
   // ---------------- Music-Related-Code ------------------
