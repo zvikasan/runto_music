@@ -50,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
   double playbackRate = 1.35;
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
-  int lengthOfMeasurement = 60;
-  int periodOfMeasurement = 200;
+  int lengthOfMeasurement = 60000; // in milliseconds
+  int periodOfMeasurement = 200; // in milliseconds
   int songBPM = 129;
-  int corrCoef = 15;
+  int corrCoef = 0;
 
   // --- new approach variables
   List<int> stepsDataList = [];
@@ -145,29 +145,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void startMeasuringNew() {
+    stepsDataList = [];
     Timer.periodic(Duration(milliseconds: periodOfMeasurement),
         (Timer t) => calculateStepsPerMinuteNew());
   }
 
   void calculateStepsPerMinuteNew() {
-    int endSteps = _steps - stepsDataList.last;
-    if (stepsDataList.length < 300) {
-      // endSteps = _steps - stepsDataList.last;
-      setState(() {
-        stepsPerMinute = (endSteps * ((stepsDataList.length / 5) / 60).round());
-        if ((stepsPerMinute / songBPM) > playbackRate * 1.002 ||
-            (stepsPerMinute / songBPM) < playbackRate * 0.97) {
-          playbackRate = (stepsPerMinute /
-              (songBPM +
-                  corrCoef)); //129 is the BPM of first song in my test playlist
-          assetsAudioPlayer.setPlaySpeed(playbackRate);
-        }
-      });
-      stepsDataList.insert(0, _steps);
+    if (stepsDataList.length == 0) {
+      stepsDataList.add(_steps);
     } else {
-      // endSteps = _steps - stepsDataList.last;
       setState(() {
-        stepsPerMinute = endSteps;
+        stepsPerMinute = ((stepsDataList[0] - stepsDataList.last) /
+                    (periodOfMeasurement * stepsDataList.length))
+                .round() *
+            60000;
         if ((stepsPerMinute / songBPM) > playbackRate * 1.002 ||
             (stepsPerMinute / songBPM) < playbackRate * 0.97) {
           playbackRate = (stepsPerMinute /
@@ -176,7 +167,10 @@ class _MyHomePageState extends State<MyHomePage> {
           assetsAudioPlayer.setPlaySpeed(playbackRate);
         }
       });
-      stepsDataList.removeLast();
+      if (stepsDataList.length ==
+          (lengthOfMeasurement / periodOfMeasurement).round()) {
+        stepsDataList.removeLast();
+      }
       stepsDataList.insert(0, _steps);
     }
   }
@@ -196,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: startMeasuring,
+          onPressed: startMeasuringNew,
           child: Text('Start'),
         ),
         appBar: AppBar(
@@ -266,6 +260,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   //height: 100,
                   thickness: 2,
                   color: Colors.blueAccent,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.previous();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.skip_previous)),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.play();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.play_arrow)),
+                    ElevatedButton(
+                        onPressed: () {
+                          assetsAudioPlayer.pause();
+                        },
+                        child: Icon(Icons.pause)),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await assetsAudioPlayer.next();
+                          setState(() {
+                            songBPM = songsBpmMap[
+                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
+                          });
+                        },
+                        child: Icon(Icons.skip_next)),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -346,38 +377,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           // });
                         },
                         child: Text('Open')),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await assetsAudioPlayer.previous();
-                          setState(() {
-                            songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
-                          });
-                        },
-                        child: Icon(Icons.skip_previous)),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await assetsAudioPlayer.play();
-                          setState(() {
-                            songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
-                          });
-                        },
-                        child: Icon(Icons.play_arrow)),
-                    ElevatedButton(
-                        onPressed: () {
-                          assetsAudioPlayer.pause();
-                        },
-                        child: Icon(Icons.pause)),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await assetsAudioPlayer.next();
-                          setState(() {
-                            songBPM = songsBpmMap[
-                                '${assetsAudioPlayer.current.valueWrapper.value.audio.assetAudioPath}'];
-                          });
-                        },
-                        child: Icon(Icons.skip_next)),
                     ElevatedButton(
                         onPressed: () {
                           assetsAudioPlayer.stop();
@@ -495,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Length: $lengthOfMeasurement'),
+                    Text('Length: ${lengthOfMeasurement / 1000}'),
                     Text('Period: $periodOfMeasurement'),
                     Text('SongBPM: $songBPM'),
                     Text('Corr: $corrCoef')
