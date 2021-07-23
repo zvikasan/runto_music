@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _stepsText = '?';
@@ -57,8 +59,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int initialStepsNumber = 0;
   bool stopMeasuring = true;
 
-  // --- new approach variables
+  // --- new approach variables ---
   List<int> stepsDataList = [];
+  AnimationController _playbackRateController;
+  // --- end of new approach variables ---
 
   var songsBpmMap = {
     'assets/music/i_like_it.mp3': 129,
@@ -75,6 +79,29 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     initPlatformState();
     super.initState();
+  }
+
+  double setSpeed = 1.0;
+  void animatePlaybackSpeed() {
+    setState(() {
+      setSpeed += 0.01;
+      assetsAudioPlayer.setPlaySpeed(setSpeed);
+    });
+    print(setSpeed);
+
+    // _playbackRateController = AnimationController(
+    //     duration: Duration(seconds: 30),
+    //     vsync: this,
+    //     lowerBound: 1,
+    //     upperBound: 2);
+    // _playbackRateController.addListener(() {
+    //   setState(() {
+    //     assetsAudioPlayer.setPlaySpeed(_playbackRateController.value);
+    //   });
+    //   print(_playbackRateController.value);
+    //   print(assetsAudioPlayer.playSpeed.toString());
+    // });
+    // _playbackRateController.forward();
   }
 
   void onStepCount(StepCount event) {
@@ -414,6 +441,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         assetsAudioPlayer.stop();
                       },
                       child: Icon(Icons.stop)),
+                  ElevatedButton(
+                      onPressed: () {
+                        animatePlaybackSpeed();
+                      },
+                      child: Icon(Icons.speed)),
                 ],
               ),
               Row(
