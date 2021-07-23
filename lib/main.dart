@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double playbackRate = 1.35;
   double testVar = 0.3;
   ValueListenable<double> playbackValue;
-  int lengthOfMeasurement = 60000; // in milliseconds
+  int lengthOfMeasurement = 20000; // in milliseconds
   int periodOfMeasurement = 2000; // in milliseconds
   int songBPM = 129;
   int corrCoef = 0;
@@ -179,8 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     (periodOfMeasurement * stepsDataList.length)) *
                 60000)
             .round();
-        if ((stepsPerMinute / songBPM) > playbackRate * 1.05 ||
-            (stepsPerMinute / songBPM) < playbackRate * 0.95) {
+        if ((stepsPerMinute / songBPM) > playbackRate * 1.01 ||
+            (stepsPerMinute / songBPM) < playbackRate * 0.99) {
           playbackRate = (stepsPerMinute /
               (songBPM +
                   corrCoef)); //129 is the BPM of first song in my test playlist
@@ -189,16 +189,16 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         }
       });
-      print('STEPS DATA LIST LENGTH: ${stepsDataList.length}');
-      print('INITIAL STEPS NUMBER: $initialStepsNumber');
-      print('STEPS: $_steps');
-      print('STEPS PER MINUTE: $stepsPerMinute');
-      print('PLAYBACK RATE: $playbackRate');
-      print(
-          'STEPS DATA FIRST: ${stepsDataList.last} LAST: ${stepsDataList[0]}');
+      // print('STEPS DATA LIST LENGTH: ${stepsDataList.length}');
+      // print('INITIAL STEPS NUMBER: $initialStepsNumber');
+      // print('STEPS: $_steps');
+      // print('STEPS PER MINUTE: $stepsPerMinute');
+      // print('PLAYBACK RATE: $playbackRate');
+      // print(
+      //     'STEPS DATA FIRST: ${stepsDataList.last} LAST: ${stepsDataList[0]}');
       if (stepsDataList.length >= (lengthOfMeasurement / periodOfMeasurement)) {
         stepsDataList.removeLast();
-        print('REMOVED');
+        // print('REMOVED');
       }
       stepsDataList.insert(0, _steps);
     }
