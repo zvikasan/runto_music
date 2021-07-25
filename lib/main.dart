@@ -555,7 +555,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('Length: ${lengthOfMeasurement / 1000}'),
-                  Text('Period: $periodOfMeasurement'),
+                  Text('Period: ${periodOfMeasurement / 1000}'),
                   Text('SongBPM: $songBPM'),
                   Text('Corr: $corrCoef')
                 ],
