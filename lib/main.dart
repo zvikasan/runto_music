@@ -426,6 +426,61 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           loopMode: LoopMode.playlist,
                           playInBackground: PlayInBackground.enabled,
                         );
+                        Future.delayed(Duration(seconds: 5), () {
+                          assetsAudioPlayer.setPlaySpeed(0.8);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 300),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(0.85);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 600),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(0.9);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 900),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(0.95);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 1200),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 1500),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.05);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 1800),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.1);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 2100),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.15);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 2400),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.2);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 2700),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.25);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 3000),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.3);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 3300),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.35);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 3600),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.4);
+                        });
+                        Future.delayed(Duration(seconds: 5, milliseconds: 3900),
+                            () {
+                          assetsAudioPlayer.setPlaySpeed(1.45);
+                        });
                         // setState(() {
                         //   // songBPM = 129;
                         //   assetsAudioPlayer.playlistAudioFinished
@@ -453,24 +508,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        assetsAudioPlayer.setPlaySpeed(0.5);
+                        assetsAudioPlayer.setPlaySpeed(0.812);
                       },
-                      child: Text('x0.5')),
+                      child: Text('x0.812')),
                   ElevatedButton(
                       onPressed: () {
-                        assetsAudioPlayer.setPlaySpeed(1.0);
+                        assetsAudioPlayer.setPlaySpeed(0.814);
                       },
-                      child: Text('x1.0')),
+                      child: Text('x0.814')),
                   ElevatedButton(
                       onPressed: () {
-                        assetsAudioPlayer.setPlaySpeed(1.5);
+                        assetsAudioPlayer.setPlaySpeed(0.816);
                       },
-                      child: Text('x1.5')),
+                      child: Text('x0.816')),
                   ElevatedButton(
                       onPressed: () {
-                        assetsAudioPlayer.setPlaySpeed(2.0);
+                        assetsAudioPlayer.setPlaySpeed(0.818);
                       },
-                      child: Text('x2.0')),
+                      child: Text('x0.818')),
                 ],
               ),
               Row(
